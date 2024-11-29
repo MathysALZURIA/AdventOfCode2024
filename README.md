@@ -1,11 +1,11 @@
 # AdventOfCode2024
 Welcome to my AdventOfCode 2024 workspace !
 
-Here you'll find my solutions to the problems proposed by AdventOfCode 2024.
+Here you'll find my solutions to the problems proposed by AdventOfCode 2024 (in java 💪).
 
 Enjoy your chrismas headache with me...
 
-:star::star: https://adventofcode.com/2024 :star::star:
+⭐⭐ https://adventofcode.com/2024 ⭐⭐
 
 ## Achievement
 |AdventOfCode2024 Day|Stars|
