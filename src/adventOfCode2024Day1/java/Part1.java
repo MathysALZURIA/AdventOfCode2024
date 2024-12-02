@@ -1,23 +1,21 @@
-package adventOfCode2024Day1;
+package adventOfCode2024Day1.java;
 
 import tools.PrintTools;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 
-public class Part2 {
+public class Part1 {
 
     // -----------------------------------------------
     // -                SOUS PROGRAMMES              -
     // -----------------------------------------------
 
     /**
-     * Part 2
-     *
+     * Part 1
      * @return the answer
      */
-    public static int part2() {
+    public static int part1() {
         // input data retrieval
         String data = tools.ReadFile.read("src\\adventOfCode2024Day1" +
                 "\\input1.txt");
@@ -25,24 +23,23 @@ public class Part2 {
         // data modification
         String[] lines = data.split("\n");
         ArrayList<Integer> firstList = new ArrayList<>();
-        HashMap<Integer, Integer> secondList = new HashMap<>();
+        ArrayList<Integer> secondList = new ArrayList<>();
 
         for (String line : lines) {
             String[] parts = line.split("   ");
-            // first list
             firstList.add(Integer.parseInt(parts[0]));
-
-            // second list
-            Integer item = Integer.parseInt(parts[1]);
-            secondList.putIfAbsent(item, 0);
-            secondList.put(item, secondList.get(item) + 1);
+            secondList.add(Integer.parseInt(parts[1]));
         }
+
+        // sort lists
+        Collections.sort(firstList);
+        Collections.sort(secondList);
 
         // data processing
         int result = 0;
 
-        for (Integer integer : firstList) {
-            result += integer * (secondList.getOrDefault(integer, 0));
+        for (int i = 0; i < firstList.size(); i++) {
+            result += Math.abs(firstList.get(i) - secondList.get(i));
         }
 
         return result;
@@ -58,9 +55,9 @@ public class Part2 {
         String problem = "Historian Hysteria";
 
         // Part 1
-        String answer = Integer.toString(part2());
+        String answer1 = Integer.toString(part1());
 
-        PrintTools.printAnswer(1, 2, problem, answer);
+        PrintTools.printAnswer(1, 1, problem, answer1);
     }
 
 }
