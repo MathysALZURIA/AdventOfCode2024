@@ -16,48 +16,42 @@ public class ReportDesc extends Report {
     // -                   METHODES                  -
     // -----------------------------------------------
 
-    @Override
-    public boolean isSafePart1() {
-        List<Integer> levels = getLevels();
+    public boolean isLevelSafe(List<Integer> levels) {
         boolean result = true;
+
         for (int i = 0; i < levels.size() - 1; i++) {
             if (isNotOkay(levels.get(i), levels.get(i + 1))) {
                 result = false;
             }
         }
+
         return result;
     }
 
     @Override
+    public boolean isSafePart1() {
+        return isLevelSafe(getLevels());
+    }
+
+    @Override
     public boolean isSafePart2() {
-        List<Integer> levels = getLevels();
         boolean result = true;
-        int erreur = 0;
+        List<Integer> levels = getLevels();
 
-        for (int i = 0; i < levels.size() - 1; i++) {
-            if (isNotOkay(levels.get(i), levels.get(i + 1))) {
+        if (isLevelSafe(levels)) {
+            return true;
+        } else {
+            for (int i = 0; i < levels.size(); i++) {
+                List<Integer> newLevels = new java.util.ArrayList<>(List.copyOf(levels));;
+                newLevels.remove(i);
 
-                erreur++;
-                if (erreur > 1) {
-                    return false;
-                } else if (i == 0) {
-                    if (isNotOkay(levels.get(i), levels.get(i + 2))
-                            || isNotOkay(levels.get(i + 1), levels.get(i + 2))) {
-                        result = false;
-                    }
-                } else if (i == levels.size() - 2) {
-                    if (isNotOkay(levels.get(i - 1), levels.get(i + 1))
-                            || isNotOkay(levels.get(i - 1), levels.get(i))) {
-                        result = false;
-                    }
-                } else {
-                    if (isNotOkay(levels.get(i - 1), levels.get(i + 1))
-                            || isNotOkay(levels.get(i), levels.get(i + 2))) {
-                        result = false;
-                    }
+                if (isLevelSafe(newLevels)) {
+                    return true;
                 }
+                result = false;
             }
         }
+
         return result;
     }
 
