@@ -19,4 +19,14 @@ public class PrintTools {
         System.out.println("Part " + part + " : " + answer);
         System.out.println(DIVIDER);
     }
+
+    public static void print2DArray(String[][] array) {
+        System.out.println();
+        for (String[] strings : array) {
+            for (String string : strings) {
+                System.out.print(string);
+            }
+            System.out.println();
+        }
+    }
 }
