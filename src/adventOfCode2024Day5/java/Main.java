@@ -7,10 +7,7 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.stream.IntStream;
 
 public class Main {
@@ -112,17 +109,66 @@ public class Main {
                 .toList();
 
         System.out.println(updateList);
+        updateList = updateList.stream().filter(update -> !update.isOkay(rulesBefore, rulesAfter)).toList();
+        System.out.println(updateList);
 
         // data processing
         Integer result = 0;
 
         for (Update update : updateList) {
+            ArrayList<Integer> ltePagesMan = update.getListUpdate();
+            ArrayList<Integer> pages = new ArrayList<>();
+
+            HashMap<Integer, List<Integer>> filteredRules = new HashMap<>();
+
+            for (Map.Entry<Integer, List<Integer>> afterRule : rulesAfter.entrySet()) {
+                if (!ltePagesMan.contains(afterRule.getKey())) {
+                    continue;
+                }
+
+                filteredRules.put(afterRule.getKey(), afterRule.getValue());
+            }
+
+            while (filteredRules.size() != 0) {
+
+                int pageFound = -1;
+
+                // on récupère la règle qui n'a pas de pages avant elles
+                for (Map.Entry<Integer, List<Integer>> entryToTest : filteredRules.entrySet()) {
+                    boolean isOk = true;
+                    for (Map.Entry<Integer, List<Integer>> entryChallenge : filteredRules.entrySet()) {
+                        isOk &= !entryChallenge.getValue().contains(entryToTest.getKey());
+                    }
+
+                    if (isOk) {
+                        pageFound = entryToTest.getKey();
+                        break;
+                    }
+                }
+
+                if (pageFound == -1) {
+                    throw new RuntimeException("FLOPPESQUE L'ALGO ! ");
+                } else {
+                    filteredRules.remove(pageFound);
+                    pages.add(pageFound);
+                }
+            }
+
+            ltePagesMan.removeAll(pages);
+            ltePagesMan.addAll(pages);
+            update.setListUpdate(ltePagesMan);
+            update.setBeforeCurent(ltePagesMan);
+            update.setAfterCurent(ltePagesMan);
+
+            System.out.println(ltePagesMan);
             if (!update.isOkay(rulesBefore, rulesAfter)) {
-                update.replace(rulesBefore, rulesAfter);
-                result += update.getMiddle();
+                System.out.println("echec " + ltePagesMan);
             };
+
+            result += update.getMiddle();
         }
 
         return Integer.toString(result);
     }
+
 }
