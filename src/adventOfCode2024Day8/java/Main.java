@@ -1,5 +1,7 @@
 package adventOfCode2024Day8.java;
 
+import adventOfCode2024Day8.java.Part1.MapPart1;
+import adventOfCode2024Day8.java.Part2.MapPart2;
 import tools.PrintTools;
 
 import java.io.IOException;
@@ -45,13 +47,15 @@ public class Main {
                 .map(s -> s.split(""))
                 .toArray(String[][]::new);
 
-        Map map = new Map(array);
+        MapPart1 mapPart1 = new MapPart1(array);
 
         // data processing
-        map.print();
-        map.printAntennas();
+//        mapPart1.print();
+//        mapPart1.printAntennas();
+        mapPart1.resonate();
+        mapPart1.print();
 
-        return Integer.toString(map.countAntinodes());
+        return Integer.toString(mapPart1.countAntinodes());
     }
 
     /**
@@ -62,9 +66,18 @@ public class Main {
     public static String part2(Path input) throws IOException {
 
         // data modification
+        String[][] array = Files.lines(input)
+                .map(s -> s.split(""))
+                .toArray(String[][]::new);
+
+        MapPart2 map = new MapPart2(array);
 
         // data processing
+//        map.print();
+//        map.printAntennas();
+        map.resonate();
+        map.print();
 
-        return "Noy Yet";
+        return Integer.toString(map.countAntinodes());
     }
 }
